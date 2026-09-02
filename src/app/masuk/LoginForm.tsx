@@ -34,13 +34,13 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleLogin} className="space-y-4">
       {error && (
-        <div className="p-3 bg-red-50 text-red-700 font-handwriting text-lg rounded-xl border border-red-200 text-center">
+        <div className="p-3 bg-red-50 text-red-700 font-body text-sm rounded-xl border border-red-200 text-center">
           {error}
         </div>
       )}
 
       <div>
-        <label className="block font-handwriting text-xl text-rose-950 mb-1">
+        <label className="block font-accent text-2xl text-rose-950 mb-1">
           Email:
         </label>
         <input
@@ -48,13 +48,13 @@ export default function LoginForm() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-2.5 rounded-xl bg-white border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 font-sans text-stone-800"
+          className="w-full px-4 py-2.5 rounded-xl bg-white border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 font-body text-sm text-stone-800"
           placeholder="kita@love.com"
         />
       </div>
 
       <div>
-        <label className="block font-handwriting text-xl text-rose-950 mb-1">
+        <label className="block font-accent text-2xl text-rose-950 mb-1">
           Kunci Rahasia (Password):
         </label>
         <input
@@ -62,7 +62,7 @@ export default function LoginForm() {
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-2.5 rounded-xl bg-white border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 font-sans text-stone-800"
+          className="w-full px-4 py-2.5 rounded-xl bg-white border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 font-body text-sm text-stone-800"
           placeholder="••••••••"
         />
       </div>
@@ -71,7 +71,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full washi-tape washi-pink py-3 font-handwriting text-2xl text-rose-950 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="w-full washi-tape washi-pink py-3 font-body font-medium text-base sm:text-lg text-rose-950 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           {loading ? (
             <span className="flex items-center gap-2">

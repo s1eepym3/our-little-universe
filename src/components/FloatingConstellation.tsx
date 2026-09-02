@@ -168,7 +168,7 @@ export default function FloatingConstellation({ moments }: { moments: Moment[] }
                           <span className="text-3xl filter drop-shadow-sm">
                             {item.emoji || "📸"}
                           </span>
-                          <span className="font-handwriting text-xs text-rose-800/70">
+                          <span className="font-accent text-sm text-rose-800/70">
                             cerita kita
                           </span>
                         </div>
@@ -177,7 +177,7 @@ export default function FloatingConstellation({ moments }: { moments: Moment[] }
 
                     {/* Polaroid Bottom Caption Chin */}
                     <div className="pt-3 text-center">
-                      <p className="font-handwriting text-lg text-stone-700 tracking-wide line-clamp-1">
+                      <p className="font-accent text-xl text-stone-700 tracking-wide line-clamp-1">
                         {item.title}
                       </p>
                     </div>
@@ -192,7 +192,7 @@ export default function FloatingConstellation({ moments }: { moments: Moment[] }
                           transition={{ duration: 0.2 }}
                           className="absolute -bottom-14 left-1/2 -translate-x-1/2 w-56 bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl shadow-xl border border-rose-100/80 z-50 text-center pointer-events-none"
                         >
-                          <p className="font-handwriting text-base text-rose-900 leading-snug">
+                          <p className="font-accent text-lg text-rose-900 leading-snug">
                             "{item.caption}"
                           </p>
                         </motion.div>
@@ -256,11 +256,11 @@ export default function FloatingConstellation({ moments }: { moments: Moment[] }
 
                   {/* Caption */}
                   <div className="pt-3 text-center">
-                    <p className="font-handwriting text-xl text-stone-800">
+                    <p className="font-accent text-2xl text-stone-800">
                       {item.title}
                     </p>
                     {item.caption && (
-                      <p className="font-handwriting text-sm text-rose-700/80 mt-1 line-clamp-2">
+                      <p className="font-body text-sm text-rose-700/80 mt-1 line-clamp-2">
                         "{item.caption}"
                       </p>
                     )}

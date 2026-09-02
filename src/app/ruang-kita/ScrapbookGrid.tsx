@@ -78,7 +78,7 @@ function ScrapbookItem({
 
         {/* Public Status Badge - Styled as a cute round stamp */}
         {moment.is_public && (
-          <div className="absolute top-2 right-2 z-20 w-8 h-8 rounded-full bg-rose-50 border border-rose-300 flex items-center justify-center text-[10px] font-handwriting text-rose-800 shadow-xs rotate-12">
+          <div className="absolute top-2 right-2 z-20 w-8 h-8 rounded-full bg-rose-50 border border-rose-300 flex items-center justify-center text-[11px] font-accent text-rose-800 shadow-xs rotate-12">
             public
           </div>
         )}
@@ -94,7 +94,7 @@ function ScrapbookItem({
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center">
               <span className="text-4xl mb-1">📸</span>
-              <span className="font-handwriting text-stone-500 text-sm">
+              <span className="font-body text-xs text-stone-500">
                 tanpa foto
               </span>
             </div>
@@ -126,15 +126,15 @@ function ScrapbookItem({
 
         {/* Scrapbook handwritten notes section */}
         <div className="space-y-1">
-          <h3 className="font-handwriting text-2xl text-stone-800 leading-tight line-clamp-1">
+          <h3 className="font-accent text-2xl text-stone-800 leading-tight line-clamp-1">
             {moment.title || "Tanpa Judul"}
           </h3>
           {moment.caption && (
-            <p className="font-handwriting text-base text-stone-600 line-clamp-2 leading-snug">
+            <p className="font-body text-sm text-stone-600 line-clamp-2 leading-snug">
               "{moment.caption}"
             </p>
           )}
-          <div className="pt-2 flex items-center justify-between text-xs font-handwriting text-rose-800/70 border-t border-dashed border-rose-100 mt-2">
+          <div className="pt-2 flex items-center justify-between text-xs font-body font-light text-rose-800/70 border-t border-dashed border-rose-100 mt-2">
             <span>
               {moment.category === "first_trip"
                 ? "✈️ First Adventure"
@@ -178,22 +178,22 @@ export default function ScrapbookGrid({
           {/* Empty Picture Frame */}
           <div className="w-48 h-56 bg-[#fdfbf7] border-4 border-dashed border-stone-300/80 rounded-md shadow-md p-4 flex flex-col items-center justify-center paper-torn">
             <span className="text-4xl mb-2 opacity-60">🖼️</span>
-            <span className="font-handwriting text-sm text-stone-500">
+            <span className="font-body text-xs text-stone-500">
               kosong & tenang
             </span>
           </div>
         </motion.div>
 
-        <h3 className="font-handwriting text-3xl text-rose-900 mb-2">
+        <h3 className="font-accent text-3xl text-rose-950 mb-1">
           Frame ini masih kosong...
         </h3>
-        <p className="font-handwriting text-xl text-rose-700/80 mb-6 max-w-sm">
+        <p className="font-body text-sm text-rose-800/80 mb-6 max-w-sm">
           isi dengan kenangan kita berdua? 📸
         </p>
 
         <Link
           href="/ruang-kita/upload"
-          className="washi-tape washi-pink px-6 py-2.5 text-lg font-handwriting text-rose-900 hover:scale-105 active:scale-95 transition-all shadow-md rotate-[-1deg]"
+          className="washi-tape washi-pink px-6 py-2.5 text-sm sm:text-base font-body font-medium text-rose-950 hover:scale-105 active:scale-95 transition-all shadow-md rotate-[-1deg]"
         >
           + Tempel Foto Pertama
         </Link>

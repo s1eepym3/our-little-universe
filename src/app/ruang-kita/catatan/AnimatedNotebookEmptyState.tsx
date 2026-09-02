@@ -51,16 +51,16 @@ export default function AnimatedNotebookEmptyState() {
         </div>
       </div>
 
-      <h3 className="font-handwriting text-3xl text-rose-950 mb-2">
+      <h3 className="font-accent text-3xl text-rose-950 mb-1">
         Belum ada catatan
       </h3>
-      <p className="font-handwriting text-xl text-rose-800/80 mb-6 max-w-sm">
+      <p className="font-body text-sm text-rose-800/80 mb-6 max-w-sm">
         Halaman pertama menunggu tinta kamu ✍️
       </p>
 
       <Link
         href="/ruang-kita/catatan?write=true"
-        className="washi-tape washi-pink px-6 py-2.5 font-handwriting text-xl text-rose-950 hover:scale-105 active:scale-95 transition-all shadow-md rotate-[-1deg] flex items-center gap-2"
+        className="washi-tape washi-pink px-6 py-2.5 font-body font-medium text-sm sm:text-base text-rose-950 hover:scale-105 active:scale-95 transition-all shadow-md rotate-[-1deg] flex items-center gap-2"
       >
         <PenLine className="w-5 h-5" />
         <span>Tulis Note Pertama</span>

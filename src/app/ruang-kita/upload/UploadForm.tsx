@@ -142,15 +142,15 @@ export default function UploadForm() {
         <div className="w-16 h-16 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 border border-rose-200 animate-bounce">
           <CheckCircle2 className="w-10 h-10" />
         </div>
-        <h2 className="font-handwriting text-4xl text-rose-950">
+        <h2 className="font-accent text-3xl sm:text-4xl text-rose-950">
           Tersimpan Indah di Semesta Kita!
         </h2>
-        <p className="font-handwriting text-xl text-rose-800/80 max-w-sm">
+        <p className="font-body text-sm text-rose-800/80 max-w-sm">
           Momen ini telah terselip rapi ke dalam scrapbook kenangan.
         </p>
         <button
           onClick={() => setSuccess(false)}
-          className="washi-tape washi-pink px-6 py-2.5 font-handwriting text-xl text-rose-950 shadow-md hover:scale-105 active:scale-95 transition-all mt-4"
+          className="washi-tape washi-pink px-6 py-2.5 font-body font-medium text-sm sm:text-base text-rose-950 shadow-md hover:scale-105 active:scale-95 transition-all mt-4"
         >
           + Upload Foto Lain
         </button>
@@ -161,14 +161,14 @@ export default function UploadForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="p-3 bg-red-50 text-red-700 font-handwriting text-lg rounded-xl border border-red-200">
+        <div className="p-3 bg-red-50 text-red-700 font-body text-sm rounded-xl border border-red-200">
           {error}
         </div>
       )}
 
       {/* DROP ZONE: Open Love-Letter Envelope Design */}
       <div className="relative">
-        <label className="block font-handwriting text-2xl text-rose-950 mb-2">
+        <label className="block font-accent text-2xl text-rose-950 mb-2">
           Pilih Foto atau Video:
         </label>
 
@@ -199,7 +199,7 @@ export default function UploadForm() {
                     alt="Preview"
                     className="w-full h-full object-cover"
                   />
-                  <span className="block text-center font-handwriting text-xs text-stone-500 mt-1">
+                  <span className="block text-center font-body text-xs text-stone-500 mt-1">
                     {file?.name.slice(0, 16)}...
                   </span>
                 </div>
@@ -208,10 +208,10 @@ export default function UploadForm() {
                   <div className="w-16 h-16 rounded-full bg-rose-100/80 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
                     💌
                   </div>
-                  <p className="font-handwriting text-2xl text-rose-950">
+                  <p className="font-accent text-2xl text-rose-950">
                     {file ? file.name : "Selipkan foto ke dalam amplop..."}
                   </p>
-                  <p className="font-handwriting text-base text-rose-700/70 max-w-xs">
+                  <p className="font-body text-xs sm:text-sm text-rose-700/70 max-w-xs">
                     Sentuh atau tarik file ke sini (Mendukung iPhone .HEIC, JPG, PNG, MP4)
                   </p>
                 </div>
@@ -224,7 +224,7 @@ export default function UploadForm() {
         </div>
 
         {statusMessage && (
-          <p className="font-handwriting text-base text-purple-800 mt-2 animate-pulse flex items-center gap-1.5">
+          <p className="font-body text-xs sm:text-sm text-purple-800 mt-2 animate-pulse flex items-center gap-1.5">
             <span>✨</span> {statusMessage}
           </p>
         )}
@@ -232,7 +232,7 @@ export default function UploadForm() {
 
       {/* Title Field */}
       <div>
-        <label className="block font-handwriting text-2xl text-rose-950 mb-1">
+        <label className="block font-accent text-2xl text-rose-950 mb-1">
           Judul Momen (opsional):
         </label>
         <input
@@ -240,13 +240,13 @@ export default function UploadForm() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="e.g. sore santai di pinggir danau..."
-          className="w-full px-4 py-3 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 bg-[#fffdfa] font-handwriting text-xl text-stone-800 placeholder:text-stone-400"
+          className="w-full px-4 py-3 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 bg-[#fffdfa] font-body text-sm sm:text-base text-stone-800 placeholder:text-stone-400"
         />
       </div>
 
       {/* Caption Field */}
       <div>
-        <label className="block font-handwriting text-2xl text-rose-950 mb-1">
+        <label className="block font-accent text-2xl text-rose-950 mb-1">
           Cerita / Catatan Manis:
         </label>
         <textarea
@@ -254,20 +254,20 @@ export default function UploadForm() {
           onChange={(e) => setCaption(e.target.value)}
           rows={3}
           placeholder="Ceritakan sedikit rasa atau tawa saat momen ini terjadi..."
-          className="w-full px-4 py-3 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 bg-[#fffdfa] font-handwriting text-xl text-stone-800 placeholder:text-stone-400 resize-none leading-relaxed"
+          className="w-full px-4 py-3 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 bg-[#fffdfa] font-body text-sm sm:text-base text-stone-800 placeholder:text-stone-400 resize-none leading-relaxed"
         />
       </div>
 
       {/* Category and Public Toggle in cozy card */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
         <div className="bg-[#fffbf5] p-3.5 rounded-xl border border-rose-200/80">
-          <label className="block font-handwriting text-xl text-rose-950 mb-1">
+          <label className="block font-accent text-xl text-rose-950 mb-1">
             Kategori Album:
           </label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value as any)}
-            className="w-full px-3 py-2 rounded-lg border border-rose-200 bg-white font-handwriting text-lg text-stone-800 focus:outline-none"
+            className="w-full px-3 py-2 rounded-lg border border-rose-200 bg-white font-body text-sm sm:text-base text-stone-800 focus:outline-none"
           >
             <option value="random">✨ Random Little Things</option>
             <option value="first_trip">✈️ First Adventures (Perjalanan Pertama)</option>
@@ -276,10 +276,10 @@ export default function UploadForm() {
 
         <div className="bg-[#fffbf5] p-3.5 rounded-xl border border-rose-200/80 flex items-center justify-between">
           <div>
-            <span className="block font-handwriting text-xl text-rose-950">
+            <span className="block font-body font-medium text-sm sm:text-base text-rose-950">
               Tampil di Publik?
             </span>
-            <span className="font-handwriting text-sm text-stone-500">
+            <span className="font-body text-xs text-stone-500">
               Bisa dilihat di halaman depan
             </span>
           </div>
@@ -312,7 +312,7 @@ export default function UploadForm() {
         <button
           type="submit"
           disabled={loading || !file}
-          className="w-full washi-tape washi-pink py-3.5 font-handwriting text-2xl text-rose-950 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer rotate-[-0.5deg]"
+          className="w-full washi-tape washi-pink py-3.5 font-body font-medium text-base sm:text-lg text-rose-950 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer rotate-[-0.5deg]"
         >
           {loading ? (
             <span className="flex items-center gap-2">

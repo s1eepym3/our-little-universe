@@ -12,7 +12,7 @@ export default function MasukPage() {
       <header className="p-6 relative z-10 max-w-md mx-auto w-full">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 hover:bg-white text-rose-700 border border-rose-200 text-sm font-handwriting text-lg transition-all"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 hover:bg-white text-rose-700 border border-rose-200 text-sm font-body font-medium transition-all"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>kembali</span>
@@ -26,10 +26,10 @@ export default function MasukPage() {
 
           <div className="text-center mb-6">
             <span className="text-3xl inline-block mb-1">🗝️</span>
-            <h1 className="font-handwriting text-4xl text-rose-950">
+            <h1 className="font-accent text-4xl text-rose-950">
               pintu rahasia
             </h1>
-            <p className="font-handwriting text-lg text-rose-800/70 -mt-1">
+            <p className="font-body text-sm text-rose-800/70 -mt-0.5">
               hanya untuk kita berdua
             </p>
           </div>
@@ -39,7 +39,7 @@ export default function MasukPage() {
       </div>
 
       <footer className="p-4 text-center relative z-10">
-        <p className="font-handwriting text-base text-rose-900/40">
+        <p className="font-body text-xs text-rose-900/50">
           tempat pulang paling tenang ‧₊˚❀
         </p>
       </footer>

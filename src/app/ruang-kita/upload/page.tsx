@@ -4,11 +4,11 @@ export default function UploadPage() {
   return (
     <div className="max-w-2xl mx-auto py-4 space-y-6">
       <div className="border-b border-dashed border-rose-200/80 pb-4">
-        <h1 className="font-handwriting text-4xl text-rose-950 flex items-center gap-2">
+        <h1 className="font-accent text-4xl text-rose-950 flex items-center gap-2">
           tempel kenangan baru
           <span className="text-xl">💌</span>
         </h1>
-        <p className="font-handwriting text-lg text-rose-800/70 -mt-1">
+        <p className="font-body text-sm text-rose-800/70 -mt-0.5">
           selipkan foto atau video ke dalam buku harian kita
         </p>
       </div>

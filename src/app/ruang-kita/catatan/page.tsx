@@ -39,17 +39,17 @@ export default async function CatatanPage({
       {/* Header with Title & Celebration Badge */}
       <div className="flex items-center justify-between border-b border-dashed border-rose-200/80 pb-4">
         <div>
-          <h1 className="font-handwriting text-4xl text-rose-950 flex items-center gap-2">
+          <h1 className="font-accent text-4xl text-rose-950 flex items-center gap-2">
             catatan kecil kita
             <span className="text-xl">💌</span>
           </h1>
-          <p className="font-handwriting text-lg text-rose-800/70 -mt-1">
+          <p className="font-body text-sm text-rose-800/70 -mt-0.5">
             pesan rahasia yang tersimpan di balik meja
           </p>
         </div>
 
         {count !== null && count > 0 && (
-          <div className="washi-tape washi-cream px-3 py-1 font-handwriting text-base text-amber-900 shadow-2xs rotate-[2deg] flex items-center gap-1.5">
+          <div className="washi-tape washi-cream px-3 py-1 font-body font-medium text-xs sm:text-sm text-amber-900 shadow-2xs rotate-[2deg] flex items-center gap-1.5">
             <span>✨ {count} catatan tertulis</span>
           </div>
         )}
@@ -103,14 +103,14 @@ export default async function CatatanPage({
 
               {/* Note Content */}
               <div className="pt-3 pb-4 text-center">
-                <p className="font-handwriting text-2xl md:text-3xl text-stone-800 leading-relaxed tracking-wide">
+                <p className="font-body-readable text-xl md:text-2xl text-stone-800 leading-relaxed tracking-normal">
                   "{randomNote.content}"
                 </p>
               </div>
 
               {/* Date Written */}
               <div className="pt-6 border-t border-dashed border-amber-200/80 text-center">
-                <p className="font-handwriting text-base text-stone-500">
+                <p className="font-body font-light text-xs sm:text-sm text-stone-500">
                   ditulis dengan cinta •{" "}
                   {new Date(randomNote.created_at).toLocaleDateString("id-ID", {
                     year: "numeric",
@@ -125,7 +125,7 @@ export default async function CatatanPage({
             <div className="flex items-center justify-center gap-4 mt-10 flex-wrap">
               <Link
                 href="/ruang-kita/catatan"
-                className="washi-tape washi-pink px-5 py-2.5 font-handwriting text-lg text-rose-950 hover:scale-105 active:scale-95 transition-all shadow-md rotate-[-2deg] flex items-center gap-2"
+                className="washi-tape washi-pink px-5 py-2.5 font-body font-medium text-sm sm:text-base text-rose-950 hover:scale-105 active:scale-95 transition-all shadow-md rotate-[-2deg] flex items-center gap-2"
               >
                 <Dice5 className="w-4 h-4" />
                 <span>🎲 Note Lain</span>
@@ -133,7 +133,7 @@ export default async function CatatanPage({
 
               <Link
                 href="/ruang-kita/catatan?write=true"
-                className="washi-tape washi-lavender px-5 py-2.5 font-handwriting text-lg text-purple-950 hover:scale-105 active:scale-95 transition-all shadow-md rotate-[1.5deg] flex items-center gap-2"
+                className="washi-tape washi-lavender px-5 py-2.5 font-body font-medium text-sm sm:text-base text-purple-950 hover:scale-105 active:scale-95 transition-all shadow-md rotate-[1.5deg] flex items-center gap-2"
               >
                 <PenLine className="w-4 h-4" />
                 <span>✏️ Tulis Baru</span>

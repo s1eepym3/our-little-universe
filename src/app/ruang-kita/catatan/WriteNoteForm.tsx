@@ -45,17 +45,17 @@ export default function WriteNoteForm() {
       <div className="flex justify-between items-center pb-2 border-b border-dashed border-rose-200">
         <Link
           href="/ruang-kita/catatan"
-          className="font-handwriting text-lg text-rose-600 hover:text-rose-800 flex items-center gap-1 transition-colors"
+          className="font-body font-medium text-xs sm:text-sm text-rose-600 hover:text-rose-800 flex items-center gap-1 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> batal menulis
         </Link>
-        <span className="font-handwriting text-base text-stone-500">
+        <span className="font-body text-xs text-stone-500">
           surat untuk kita berdua
         </span>
       </div>
 
       <div>
-        <label className="block font-handwriting text-xl text-rose-950 mb-2">
+        <label className="block font-accent text-2xl text-rose-950 mb-2">
           Mood kamu saat menulis ini:
         </label>
         <div className="flex gap-2.5 flex-wrap">
@@ -77,7 +77,7 @@ export default function WriteNoteForm() {
       </div>
 
       <div>
-        <label className="block font-handwriting text-xl text-rose-950 mb-1">
+        <label className="block font-accent text-2xl text-rose-950 mb-1">
           Isi catatan:
         </label>
         <textarea
@@ -86,7 +86,7 @@ export default function WriteNoteForm() {
           rows={5}
           placeholder="Tulis sesuatu yang ingin kamu bisikkan, atau cerita yang ingin kita kenang nanti..."
           required
-          className="w-full px-4 py-4 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 bg-[#fffefc] resize-none font-handwriting text-2xl text-stone-800 leading-relaxed placeholder:font-handwriting placeholder:text-stone-400 placeholder:text-xl"
+          className="w-full px-4 py-4 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 bg-[#fffefc] resize-none font-body-readable text-base sm:text-lg text-stone-800 leading-relaxed placeholder:font-body placeholder:text-stone-400 placeholder:text-sm"
         />
       </div>
 
@@ -94,7 +94,7 @@ export default function WriteNoteForm() {
         <button
           type="submit"
           disabled={loading || !content.trim()}
-          className="w-full washi-tape washi-pink py-3 font-handwriting text-2xl text-rose-950 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="w-full washi-tape washi-pink py-3 font-body font-medium text-lg text-rose-950 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           {loading ? (
             <span className="flex items-center gap-2">

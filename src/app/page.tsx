@@ -27,13 +27,13 @@ export default async function Home() {
           className="group block opacity-0 animate-[fadeIn_1.4s_ease-out_2s_forwards]"
           style={{ animationFillMode: "forwards" }}
         >
-          <span className="font-handwriting text-3xl md:text-4xl text-rose-900/80 group-hover:text-rose-600 transition-colors drop-shadow-xs flex items-center gap-2">
+          <span className="font-accent text-3xl md:text-4xl text-rose-900/80 group-hover:text-rose-600 transition-colors drop-shadow-xs flex items-center gap-2">
             our little universe
-            <span className="text-sm font-sans opacity-0 group-hover:opacity-80 transition-opacity text-rose-500">
+            <span className="text-sm opacity-0 group-hover:opacity-80 transition-opacity text-rose-500">
               ✦
             </span>
           </span>
-          <p className="font-handwriting text-sm text-rose-800/60 -mt-1 group-hover:text-rose-700 transition-colors">
+          <p className="font-body text-sm text-rose-800/60 font-normal -mt-1 group-hover:text-rose-700 transition-colors">
             every little second with you
           </p>
         </Link>
@@ -46,7 +46,7 @@ export default async function Home() {
           className="group flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/40 hover:bg-white/80 backdrop-blur-md border border-rose-200/50 shadow-xs transition-all duration-300 hover:scale-105"
         >
           <span className="text-base select-none">🗝️</span>
-          <span className="font-handwriting text-lg text-rose-900/80 group-hover:text-rose-900">
+          <span className="font-accent text-xl text-rose-900/80 group-hover:text-rose-900">
             ruang kita
           </span>
         </Link>
@@ -59,7 +59,7 @@ export default async function Home() {
 
       {/* Tiny subtle whisper at the bottom */}
       <footer className="relative z-20 pb-5 text-center pointer-events-none">
-        <p className="font-handwriting text-base text-rose-900/40 tracking-wider">
+        <p className="font-body text-sm text-rose-900/60 font-light tracking-wide">
           sentuh foto untuk melihat kenangan kita ‧₊˚❀༉‧₊˚.
         </p>
       </footer>

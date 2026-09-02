@@ -20,7 +20,7 @@ export default function HeartLoader({ text = "Memuat kenangan..." }: { text?: st
         💖
       </motion.div>
       {text && (
-        <p className="font-handwriting text-xl text-rose-700/80 tracking-wide animate-pulse">
+        <p className="font-body text-sm sm:text-base text-rose-700/80 tracking-wide animate-pulse">
           {text}
         </p>
       )}

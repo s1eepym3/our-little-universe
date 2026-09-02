@@ -26,7 +26,7 @@ export default function ClientRandomGrid({ moments }: { moments: Moment[] }) {
     return (
       <div className="py-16 text-center text-rose-800/60 bg-white/60 rounded-3xl border border-rose-200/80 border-dashed paper-torn">
         <span className="text-4xl block mb-2">📸</span>
-        <p className="font-handwriting text-2xl">
+        <p className="font-body text-base text-rose-800/70">
           Belum ada hal-hal kecil yang tersimpan.
         </p>
       </div>
@@ -77,11 +77,11 @@ export default function ClientRandomGrid({ moments }: { moments: Moment[] }) {
 
             {/* Handwritten Caption */}
             <div className="pt-3 text-center">
-              <p className="font-handwriting text-lg text-stone-800 line-clamp-1">
+              <p className="font-accent text-xl text-stone-800 line-clamp-1">
                 {moment.title || moment.caption || "Momen kita"}
               </p>
               {moment.caption && moment.title && (
-                <p className="font-handwriting text-sm text-rose-700/80 line-clamp-1">
+                <p className="font-body text-xs text-rose-700/80 line-clamp-1">
                   "{moment.caption}"
                 </p>
               )}

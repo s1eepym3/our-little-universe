@@ -32,12 +32,12 @@ export default async function MomentsPage() {
           className="group flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 hover:bg-white border border-rose-200 shadow-xs transition-all duration-200 hover:scale-105"
         >
           <ArrowLeft className="w-4 h-4 text-rose-500 group-hover:-translate-x-0.5 transition-transform" />
-          <span className="font-handwriting text-lg text-rose-950">
+          <span className="font-body font-medium text-sm text-rose-950">
             kembali ke semesta
           </span>
         </Link>
 
-        <span className="washi-tape washi-pink px-4 py-1 text-sm font-handwriting text-rose-900 shadow-2xs rotate-[-1deg]">
+        <span className="washi-tape washi-pink px-4 py-1 text-base font-accent text-rose-950 shadow-2xs rotate-[-1deg]">
           buku perjalanan kita 📖
         </span>
       </header>
@@ -46,11 +46,11 @@ export default async function MomentsPage() {
         {/* SECTION A: First Adventures */}
         <section>
           <div className="mb-10 text-center md:text-left border-b border-dashed border-rose-200/80 pb-4">
-            <h2 className="font-handwriting text-4xl md:text-5xl text-rose-950 flex items-center justify-center md:justify-start gap-2">
+            <h2 className="font-accent text-4xl md:text-5xl text-rose-950 flex items-center justify-center md:justify-start gap-2">
               perjalanan pertama kita
               <span className="text-2xl">✈️</span>
             </h2>
-            <p className="font-handwriting text-xl text-rose-800/70 -mt-1">
+            <p className="font-body text-sm sm:text-base text-rose-800/70 -mt-0.5">
               jejak langkah terawal, kota baru, dan debar yang sama
             </p>
           </div>
@@ -79,11 +79,11 @@ export default async function MomentsPage() {
                   )}
 
                   <div className="px-1 space-y-1 text-center md:text-left">
-                    <h3 className="font-handwriting text-3xl text-stone-800">
+                    <h3 className="font-accent text-2xl sm:text-3xl text-stone-800">
                       {moment.title || "Perjalanan Indah"}
                     </h3>
                     {moment.caption && (
-                      <p className="font-handwriting text-xl text-stone-600 leading-relaxed">
+                      <p className="font-body text-sm sm:text-base text-stone-600 leading-relaxed">
                         "{moment.caption}"
                       </p>
                     )}
@@ -93,7 +93,7 @@ export default async function MomentsPage() {
             ) : (
               <div className="col-span-full py-16 text-center text-rose-800/60 bg-white/60 rounded-3xl border border-rose-200/80 border-dashed paper-torn">
                 <span className="text-4xl block mb-2">🗺️</span>
-                <p className="font-handwriting text-2xl">
+                <p className="font-body text-base text-rose-800/70">
                   Belum ada catatan perjalanan pertama yang ditempel.
                 </p>
               </div>
@@ -104,11 +104,11 @@ export default async function MomentsPage() {
         {/* SECTION B: Random Little Things */}
         <section>
           <div className="mb-10 text-center md:text-left border-b border-dashed border-rose-200/80 pb-4">
-            <h2 className="font-handwriting text-4xl md:text-5xl text-rose-950 flex items-center justify-center md:justify-start gap-2">
+            <h2 className="font-accent text-4xl md:text-5xl text-rose-950 flex items-center justify-center md:justify-start gap-2">
               hal-hal kecil tak terduga
               <span className="text-2xl">🌸</span>
             </h2>
-            <p className="font-handwriting text-xl text-rose-800/70 -mt-1">
+            <p className="font-body text-sm sm:text-base text-rose-800/70 -mt-0.5">
               tawa mendadak, foto buram, dan jutaan detik sederhana bersamamu
             </p>
           </div>
