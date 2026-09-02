@@ -85,6 +85,14 @@ body {
   animation: meshShift 20s ease infinite;
 }
 
+@media (max-width: 768px) {
+  .animated-mesh-bg {
+    animation: none;
+    background: linear-gradient(135deg, #ffe4e6 0%, #fffaf0 50%, #fae8ff 100%);
+    background-size: 100% 100%;
+  }
+}
+
 /* Washi Tape Styling with semi-translucent pastel texture */
 .washi-tape {
   position: relative;

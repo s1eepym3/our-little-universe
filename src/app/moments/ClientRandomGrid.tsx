@@ -3,6 +3,7 @@
 import { Moment } from "@/types/database";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const washiColors = ["washi-pink", "washi-lavender", "washi-cream"];
 
@@ -10,8 +11,10 @@ export default function ClientRandomGrid({ moments }: { moments: Moment[] }) {
   const [shuffled, setShuffled] = useState<
     (Moment & { rotation: number; floatDuration: number; washi: string })[]
   >([]);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    setIsMobile(window.innerWidth <= 768);
     // Client-side shuffle with organic rotation and float durations
     const list = [...moments].sort(() => Math.random() - 0.5).map((m, idx) => ({
       ...m,
@@ -39,19 +42,17 @@ export default function ClientRandomGrid({ moments }: { moments: Moment[] }) {
         <motion.div
           key={moment.id}
           className="will-change-transform"
-          animate={{
-            y: [0, -6, 0],
-          }}
+          animate={isMobile ? {} : { y: [0, -6, 0] }}
           transition={{
             duration: moment.floatDuration,
-            repeat: Infinity,
+            repeat: isMobile ? 0 : Infinity,
             ease: "easeInOut",
             delay: (idx * 0.25) % 2,
           }}
         >
           <div
             style={{
-              transform: `rotate(${moment.rotation}deg)`,
+              transform: isMobile ? "none" : `rotate(${moment.rotation}deg)`,
             }}
             className="relative bg-[#fdfbf7] p-3 pb-5 shadow-lg hover:shadow-2xl hover:scale-105 hover:rotate-0 transition-all duration-300 border border-stone-200/70 rounded-xs group cursor-pointer"
           >
@@ -63,10 +64,13 @@ export default function ClientRandomGrid({ moments }: { moments: Moment[] }) {
             {/* Photo */}
             <div className="aspect-[3/4] bg-rose-50/50 rounded-xs overflow-hidden relative border border-stone-200/40">
               {moment.cover_url ? (
-                <img
+                <Image
                   src={moment.cover_url}
                   alt={moment.title || "Candid moment"}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  fill
+                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                  loading="lazy"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-3xl">

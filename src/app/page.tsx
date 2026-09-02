@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { Moment } from "@/types/database";
 import FloatingConstellation from "@/components/FloatingConstellation";
-import FloatingParticles from "@/components/FloatingParticles";
+import FloatingParticles from "@/components/LazyFloatingParticles";
 import Link from "next/link";
 
 export const revalidate = 60; // ISR 60 seconds

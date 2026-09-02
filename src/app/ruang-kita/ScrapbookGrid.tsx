@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Moment } from "@/types/database";
 import { Trash2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface ScrapbookGridProps {
   moments: Moment[];
@@ -25,14 +26,20 @@ function ScrapbookItem({
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Micro-float duration 5s - 8s
+  useEffect(() => {
+    setIsMobile(window.innerWidth <= 768);
+  }, []);
+
+  // Micro-float duration 5s - 8s (desktop only)
   const floatDuration = 5 + (index % 4) * 0.9;
   const floatDelay = (index * 0.3) % 2;
   const washi = washiStyles[index % washiStyles.length];
   const paperClass = index % 2 === 0 ? "paper-torn" : "paper-torn-alt";
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isMobile) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
@@ -51,10 +58,10 @@ function ScrapbookItem({
   return (
     <motion.div
       className="will-change-transform"
-      animate={isHovered ? { y: 0 } : { y: [0, -4, 0] }}
+      animate={isMobile ? {} : isHovered ? { y: 0 } : { y: [0, -4, 0] }}
       transition={{
         duration: floatDuration,
-        repeat: isHovered ? 0 : Infinity,
+        repeat: isMobile || isHovered ? 0 : Infinity,
         ease: "easeInOut",
         delay: floatDelay,
       }}
@@ -64,10 +71,12 @@ function ScrapbookItem({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={handleMouseLeave}
         style={{
-          transform: isHovered
+          transform: !isMobile && isHovered
             ? `perspective(800px) rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg) scale3d(1.03, 1.03, 1.03)`
-            : "perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)",
-          transition: isHovered ? "transform 0.1s ease-out" : "transform 0.4s ease-out",
+            : isHovered
+            ? "scale3d(1.02, 1.02, 1.02)"
+            : "none",
+          transition: isHovered ? "transform 0.15s ease-out" : "transform 0.3s ease-out",
         }}
         className={`relative bg-[#fdfbf7] p-4 pb-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-stone-200/80 ${paperClass} group`}
       >
@@ -86,10 +95,13 @@ function ScrapbookItem({
         {/* Photo Canvas */}
         <div className="w-full aspect-[4/3] bg-rose-50/70 rounded-xs overflow-hidden relative border border-stone-200/60 mb-3.5">
           {moment.cover_url ? (
-            <img
+            <Image
               src={moment.cover_url}
               alt={moment.title || "Kenangan"}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              loading="lazy"
+              className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
             />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center">

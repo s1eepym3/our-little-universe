@@ -1,7 +1,7 @@
 import LoginForm from "./LoginForm";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import FloatingParticles from "@/components/FloatingParticles";
+import FloatingParticles from "@/components/LazyFloatingParticles";
 
 export default function MasukPage() {
   return (

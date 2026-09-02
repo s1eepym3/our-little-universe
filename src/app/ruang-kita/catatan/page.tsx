@@ -3,7 +3,7 @@ import { Note } from "@/types/database";
 import Link from "next/link";
 import { PenLine, Dice5, Heart } from "lucide-react";
 import WriteNoteForm from "./WriteNoteForm";
-import AnimatedNotebookEmptyState from "./AnimatedNotebookEmptyState";
+import AnimatedNotebookEmptyState from "./LazyNotebookEmptyState";
 
 export const dynamic = "force-dynamic";
 
@@ -17,18 +17,17 @@ export default async function CatatanPage({
 
   const supabase = await createClient();
 
-  // Get total count
-  const { count } = await supabase
+  // Fetch all notes in a single query (instant count + random pick, no double roundtrip)
+  const { data: allNotes } = await supabase
     .from("notes")
-    .select("*", { count: "exact", head: true });
+    .select("*")
+    .order("created_at", { ascending: false });
 
+  const count = allNotes ? allNotes.length : 0;
   let randomNote: Note | null = null;
 
-  if (count && count > 0 && !isWriting) {
-    const { data: allNotes } = await supabase.from("notes").select("*");
-    if (allNotes && allNotes.length > 0) {
-      randomNote = allNotes[Math.floor(Math.random() * allNotes.length)] as Note;
-    }
+  if (allNotes && allNotes.length > 0 && !isWriting) {
+    randomNote = allNotes[Math.floor(Math.random() * allNotes.length)] as Note;
   }
 
   // Random rotation for the pinned note card (-2.5deg to +2.5deg)

@@ -1,9 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { Moment } from "@/types/database";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import ClientRandomGrid from "./ClientRandomGrid";
-import FloatingParticles from "@/components/FloatingParticles";
+import FloatingParticles from "@/components/LazyFloatingParticles";
 
 export const revalidate = 60;
 
@@ -70,10 +71,13 @@ export default async function MomentsPage() {
 
                   {moment.cover_url && (
                     <div className="aspect-[4/3] rounded-xs overflow-hidden mb-4 relative border border-stone-200/60 bg-rose-50/50">
-                      <img
+                      <Image
                         src={moment.cover_url}
                         alt={moment.title || "First Adventure"}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        loading="lazy"
+                        className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                       />
                     </div>
                   )}

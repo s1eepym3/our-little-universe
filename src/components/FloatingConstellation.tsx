@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Moment } from "@/types/database";
 import Link from "next/link";
+import Image from "next/image";
 
 interface PolaroidItem {
   id: string;
@@ -158,10 +159,13 @@ export default function FloatingConstellation({ moments }: { moments: Moment[] }
                     {/* Photo Area */}
                     <div className="w-full aspect-[4/3] bg-rose-50/60 rounded-xs overflow-hidden flex items-center justify-center relative border border-stone-200/40">
                       {item.cover_url ? (
-                        <img
+                        <Image
                           src={item.cover_url}
                           alt={item.title}
-                          className="w-full h-full object-cover filter contrast-[1.02] brightness-[1.02] hover:filter-none transition-all duration-300"
+                          fill
+                          sizes="(max-width: 768px) 70vw, 220px"
+                          loading="lazy"
+                          className="object-cover filter contrast-[1.02] brightness-[1.02] hover:filter-none transition-all duration-300"
                         />
                       ) : (
                         <div className="flex flex-col items-center justify-center gap-1 p-2 text-center">
@@ -240,12 +244,15 @@ export default function FloatingConstellation({ moments }: { moments: Moment[] }
                   />
 
                   {/* Photo Area */}
-                  <div className="w-full aspect-[4/3] bg-rose-50/50 rounded-xs overflow-hidden flex items-center justify-center border border-stone-200/40">
+                  <div className="w-full aspect-[4/3] bg-rose-50/50 rounded-xs overflow-hidden flex items-center justify-center relative border border-stone-200/40">
                     {item.cover_url ? (
-                      <img
+                      <Image
                         src={item.cover_url}
                         alt={item.title}
-                        className="w-full h-full object-cover"
+                        fill
+                        sizes="260px"
+                        loading="lazy"
+                        className="object-cover"
                       />
                     ) : (
                       <div className="flex flex-col items-center justify-center p-2 text-center">
