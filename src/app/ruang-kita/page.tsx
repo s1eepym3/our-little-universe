@@ -72,7 +72,7 @@ export default async function RuangKitaPage({
                 : "bg-white/80 text-stone-600 hover:bg-rose-50"
             }`}
           >
-            ✈️ First Adventures
+            ☕ Tempat Kita
           </Link>
 
           <Link

@@ -18,7 +18,7 @@ export default async function MomentsPage() {
 
   const typedMoments = (moments as Moment[]) || [];
 
-  const firstAdventures = typedMoments.filter((m) => m.category === "first_trip");
+  const tempatKitaMoments = typedMoments.filter((m) => m.category === "first_trip");
   const randomThings = typedMoments.filter((m) => m.category === "random");
 
   return (
@@ -44,21 +44,21 @@ export default async function MomentsPage() {
       </header>
 
       <div className="max-w-6xl mx-auto px-4 md:px-8 space-y-24 relative z-10">
-        {/* SECTION A: First Adventures */}
+        {/* SECTION A: Tempat Kita */}
         <section>
           <div className="mb-10 text-center md:text-left border-b border-dashed border-rose-200/80 pb-4">
             <h2 className="font-accent text-4xl md:text-5xl text-rose-950 flex items-center justify-center md:justify-start gap-2">
-              perjalanan pertama kita
-              <span className="text-2xl">✈️</span>
+              tempat kita
+              <span className="text-2xl">☕</span>
             </h2>
             <p className="font-body text-sm sm:text-base text-rose-800/70 -mt-0.5">
-              jejak langkah terawal, kota baru, dan debar yang sama
+              Setiap tempat yang pernah kita singgahi bersama — dari kafe sudut kota sampai pantai yang kita datangi sore-sore.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {firstAdventures.length > 0 ? (
-              firstAdventures.map((moment, idx) => (
+            {tempatKitaMoments.length > 0 ? (
+              tempatKitaMoments.map((moment, idx) => (
                 <div
                   key={moment.id}
                   style={{
@@ -73,7 +73,7 @@ export default async function MomentsPage() {
                     <div className="aspect-[4/3] rounded-xs overflow-hidden mb-4 relative border border-stone-200/60 bg-rose-50/50">
                       <Image
                         src={moment.cover_url}
-                        alt={moment.title || "First Adventure"}
+                        alt={moment.title || "Tempat Kita"}
                         fill
                         sizes="(max-width: 768px) 100vw, 50vw"
                         loading="lazy"
@@ -84,7 +84,7 @@ export default async function MomentsPage() {
 
                   <div className="px-1 space-y-1 text-center md:text-left">
                     <h3 className="font-accent text-2xl sm:text-3xl text-stone-800">
-                      {moment.title || "Perjalanan Indah"}
+                      {moment.title || "Sudut Manis"}
                     </h3>
                     {moment.caption && (
                       <p className="font-body text-sm sm:text-base text-stone-600 leading-relaxed">
@@ -96,9 +96,9 @@ export default async function MomentsPage() {
               ))
             ) : (
               <div className="col-span-full py-16 text-center text-rose-800/60 bg-white/60 rounded-3xl border border-rose-200/80 border-dashed paper-torn">
-                <span className="text-4xl block mb-2">🗺️</span>
+                <span className="text-4xl block mb-2">☕</span>
                 <p className="font-body text-base text-rose-800/70">
-                  Belum ada catatan perjalanan pertama yang ditempel.
+                  Belum ada tempat yang kita tandai... mau mulai dari kafe favorit minggu ini? ☕
                 </p>
               </div>
             )}

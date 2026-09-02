@@ -149,7 +149,7 @@ function ScrapbookItem({
           <div className="pt-2 flex items-center justify-between text-xs font-body font-light text-rose-800/70 border-t border-dashed border-rose-100 mt-2">
             <span>
               {moment.category === "first_trip"
-                ? "✈️ First Adventure"
+                ? "☕ Tempat Kita"
                 : "🌸 Random Thing"}
             </span>
             <span>

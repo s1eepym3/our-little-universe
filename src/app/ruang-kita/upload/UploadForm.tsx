@@ -269,8 +269,8 @@ export default function UploadForm() {
             onChange={(e) => setCategory(e.target.value as any)}
             className="w-full px-3 py-2 rounded-lg border border-rose-200 bg-white font-body text-sm sm:text-base text-stone-800 focus:outline-none"
           >
+            <option value="first_trip">☕ Tempat Kita</option>
             <option value="random">✨ Random Little Things</option>
-            <option value="first_trip">✈️ First Adventures (Perjalanan Pertama)</option>
           </select>
         </div>
 
