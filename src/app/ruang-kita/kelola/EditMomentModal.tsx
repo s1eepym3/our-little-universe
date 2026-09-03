@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Moment } from "@/types/database";
 import { createClient } from "@/lib/supabase/client";
@@ -24,6 +25,7 @@ export default function EditMomentModal({
   onClose,
   onSuccess,
 }: EditMomentModalProps) {
+  const [mounted, setMounted] = useState(false);
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
   const [category, setCategory] = useState<"first_trip" | "random">("random");
@@ -35,6 +37,20 @@ export default function EditMomentModal({
   const [loading, setLoading] = useState(false);
   const [statusMsg, setStatusMsg] = useState("");
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     const supabase = createClient();
@@ -154,11 +170,11 @@ export default function EditMomentModal({
     }
   };
 
-  if (!isOpen || !moment) return null;
+  if (!mounted || !isOpen || !moment) return null;
 
-  return (
+  return createPortal(
     <AnimatePresence>
-      <div className="fixed inset-0 z-[80] flex items-center justify-center p-0 sm:p-4 bg-stone-900/60 backdrop-blur-xs overflow-y-auto">
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4 bg-stone-900/60 backdrop-blur-xs overflow-y-auto">
         <motion.div
           initial={{ opacity: 0, scale: 0.96, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -348,6 +364,7 @@ export default function EditMomentModal({
           </form>
         </motion.div>
       </div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

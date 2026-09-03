@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Note } from "@/types/database";
 import { createClient } from "@/lib/supabase/client";
@@ -22,10 +23,25 @@ export default function EditNoteModal({
   onClose,
   onSuccess,
 }: EditNoteModalProps) {
+  const [mounted, setMounted] = useState(false);
   const [content, setContent] = useState("");
   const [mood, setMood] = useState("💕");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (note) {
@@ -67,11 +83,11 @@ export default function EditNoteModal({
     }
   };
 
-  if (!isOpen || !note) return null;
+  if (!mounted || !isOpen || !note) return null;
 
-  return (
+  return createPortal(
     <AnimatePresence>
-      <div className="fixed inset-0 z-[80] flex items-center justify-center p-0 sm:p-4 bg-stone-900/60 backdrop-blur-xs overflow-y-auto">
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4 bg-stone-900/60 backdrop-blur-xs overflow-y-auto">
         <motion.div
           initial={{ opacity: 0, scale: 0.96, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -168,6 +184,7 @@ export default function EditNoteModal({
           </form>
         </motion.div>
       </div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
