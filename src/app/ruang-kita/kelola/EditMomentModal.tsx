@@ -158,12 +158,12 @@ export default function EditMomentModal({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4 bg-stone-900/60 backdrop-blur-xs overflow-y-auto">
+      <div className="fixed inset-0 z-[80] flex items-center justify-center p-0 sm:p-4 bg-stone-900/60 backdrop-blur-xs overflow-y-auto">
         <motion.div
           initial={{ opacity: 0, scale: 0.96, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 10 }}
-          className="relative w-full h-full sm:h-auto sm:max-w-lg bg-[#fffdfa] p-6 sm:p-8 sm:rounded-2xl shadow-2xl border border-rose-200/80 paper-torn flex flex-col justify-between overflow-y-auto max-h-[100vh] sm:max-h-[92vh]"
+          className="relative w-full h-full sm:h-auto sm:max-w-lg bg-[#fffdfa] p-6 pb-8 sm:p-8 sm:pb-8 sm:rounded-2xl shadow-2xl border border-rose-200/80 paper-torn flex flex-col justify-between overflow-y-auto max-h-[100vh] sm:max-h-[92vh]"
         >
           {/* Top Washi Tape */}
           <div className="washi-tape washi-lavender absolute -top-3 left-1/2 -translate-x-1/2 w-32 h-5 opacity-90 shadow-2xs rotate-[-1deg] hidden sm:block" />

@@ -29,13 +29,13 @@ export default function ConfirmDialog({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs">
+        <div className="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs">
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ duration: 0.2 }}
-            className="relative w-full max-w-md bg-[#fffdfa] p-6 sm:p-8 shadow-2xl border border-rose-200/80 paper-torn"
+            className="relative w-full max-w-md bg-[#fffdfa] p-6 pb-8 sm:p-8 sm:pb-8 shadow-2xl border border-rose-200/80 paper-torn"
           >
             {/* Top Washi Tape */}
             <div className="washi-tape washi-lavender absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-5 opacity-90 shadow-2xs rotate-[-1deg]" />

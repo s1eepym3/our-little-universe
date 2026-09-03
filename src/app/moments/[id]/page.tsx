@@ -18,13 +18,26 @@ export default async function MomentDetailPage({
 
   const supabase = await createClient();
 
-  const { data: moment } = await supabase
-    .from("moments")
-    .select("*, media(*)")
-    .eq("id", id)
-    .single();
+  let typedMoment: (Moment & { media: Media[] }) | null = null;
 
-  const typedMoment = moment as (Moment & { media: Media[] }) | null;
+  try {
+    const { data: moment } = await supabase
+      .from("moments")
+      .select("*, media(*)")
+      .eq("id", id)
+      .maybeSingle();
+
+    typedMoment = (moment as (Moment & { media: Media[] })) || null;
+  } catch {
+    typedMoment = null;
+  }
+
+  const tags = typedMoment?.tags ?? [];
+  const title = typedMoment?.title ?? "";
+  const caption = typedMoment?.caption ?? "";
+  const hasCover =
+    typeof typedMoment?.cover_url === "string" &&
+    typedMoment.cover_url.trim().length > 0;
 
   return (
     <div className="min-h-screen pb-24 bg-[#fffaf5] animated-mesh-bg paper-noise relative overflow-x-hidden flex flex-col justify-between">
@@ -58,19 +71,19 @@ export default async function MomentDetailPage({
       <main className="flex-grow flex items-center justify-center px-4 py-8 relative z-10 max-w-3xl mx-auto w-full">
         {!typedMoment ? (
           <div className="bg-[#fffdfa] p-10 md:p-14 shadow-2xl border border-stone-200 paper-torn text-center max-w-md mx-auto space-y-4">
-            <span className="text-5xl block animate-bounce">🔍</span>
-            <h1 className="font-accent text-3xl text-rose-950">
-              Kenangan Tidak Ditemukan
+            <span className="text-5xl block animate-bounce">🥺</span>
+            <h1 className="font-accent text-3xl sm:text-4xl text-rose-950 leading-snug">
+              kenangan ini tidak ditemukan atau sedang disembunyikan 🥺
             </h1>
             <p className="font-body text-sm text-stone-600 leading-relaxed">
               Momen ini mungkin telah tersimpan di ruang rahasia lain atau belum pernah terabadikan.
             </p>
-            <div className="pt-4">
+            <div className="pt-4 flex justify-center">
               <Link
-                href="/moments"
+                href="/"
                 className="washi-tape washi-pink px-6 py-2.5 font-body font-medium text-sm text-rose-950 inline-block shadow-sm hover:scale-105 transition-transform"
               >
-                Buka Buku Kenangan 📖
+                kembali ke semesta ✦
               </Link>
             </div>
           </div>
@@ -106,34 +119,41 @@ export default async function MomentDetailPage({
             </div>
 
             {/* Photo Canvas - Large and Clear */}
-            {typedMoment.cover_url && (
+            {hasCover ? (
               <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] bg-rose-50/70 rounded-sm overflow-hidden border border-stone-200/80 shadow-inner mb-6">
                 <Image
-                  src={typedMoment.cover_url}
-                  alt={typedMoment.title || "Kenangan Kita"}
+                  src={typedMoment.cover_url!}
+                  alt={title || "Kenangan Kita"}
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, 768px"
                   className="object-cover"
                 />
               </div>
+            ) : (
+              <div className="w-full aspect-[4/3] sm:aspect-[16/11] bg-rose-50/50 rounded-sm border border-stone-200/60 flex flex-col items-center justify-center gap-2 mb-6">
+                <span className="text-5xl">📸</span>
+                <span className="font-accent text-lg text-rose-800/70">
+                  cerita tanpa foto
+                </span>
+              </div>
             )}
 
             {/* Handwritten Title and Story */}
             <div className="space-y-3 text-center sm:text-left pt-2">
               <h1 className="font-accent text-3xl sm:text-4xl md:text-5xl text-stone-900 leading-tight">
-                {typedMoment.title || "Momen Tanpa Judul"}
+                {title || "Momen Tanpa Judul"}
               </h1>
 
-              {typedMoment.caption && (
+              {caption && (
                 <p className="font-body-readable text-lg sm:text-xl md:text-2xl text-stone-700 leading-relaxed pt-1">
-                  "{typedMoment.caption}"
+                  &ldquo;{caption}&rdquo;
                 </p>
               )}
 
               {/* Stiker Rasa Tags */}
               <WashiTagChips
-                tags={typedMoment.tags}
+                tags={tags}
                 max={5}
                 clickable
                 size="sm"
