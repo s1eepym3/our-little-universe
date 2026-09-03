@@ -12,8 +12,12 @@ CREATE TABLE public.moments (
     category moment_category NOT NULL,
     is_public BOOLEAN DEFAULT false,
     cover_url TEXT,
+    tags TEXT[] NOT NULL DEFAULT '{}',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
+
+-- Migration for existing deployments
+ALTER TABLE public.moments ADD COLUMN IF NOT EXISTS tags TEXT[] NOT NULL DEFAULT '{}';
 
 CREATE TABLE public.media (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

@@ -4,6 +4,8 @@ import { Moment } from "@/types/database";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
+import WashiTagChips from "@/components/WashiTagChips";
 
 const washiColors = ["washi-pink", "washi-lavender", "washi-cream"];
 
@@ -50,11 +52,12 @@ export default function ClientRandomGrid({ moments }: { moments: Moment[] }) {
             delay: (idx * 0.25) % 2,
           }}
         >
-          <div
+          <Link
+            href={`/moments/${moment.id}`}
             style={{
               transform: isMobile ? "none" : `rotate(${moment.rotation}deg)`,
             }}
-            className="relative bg-[#fdfbf7] p-3 pb-5 shadow-lg hover:shadow-2xl hover:scale-105 hover:rotate-0 transition-all duration-300 border border-stone-200/70 rounded-xs group cursor-pointer"
+            className="block relative bg-[#fdfbf7] p-3 pb-5 shadow-lg hover:shadow-2xl hover:scale-105 hover:rotate-0 transition-all duration-300 border border-stone-200/70 rounded-xs group cursor-pointer"
           >
             {/* Washi Tape */}
             <div
@@ -81,7 +84,7 @@ export default function ClientRandomGrid({ moments }: { moments: Moment[] }) {
 
             {/* Handwritten Caption */}
             <div className="pt-3 text-center">
-              <p className="font-accent text-xl text-stone-800 line-clamp-1">
+              <p className="font-accent text-xl text-stone-800 line-clamp-1 group-hover:text-rose-950 transition-colors">
                 {moment.title || moment.caption || "Momen kita"}
               </p>
               {moment.caption && moment.title && (
@@ -89,8 +92,10 @@ export default function ClientRandomGrid({ moments }: { moments: Moment[] }) {
                   "{moment.caption}"
                 </p>
               )}
+              {/* Washi Tag Chips */}
+              <WashiTagChips tags={moment.tags} max={3} className="pt-2 justify-center" />
             </div>
-          </div>
+          </Link>
         </motion.div>
       ))}
     </div>

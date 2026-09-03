@@ -12,6 +12,7 @@ interface PolaroidItem {
   caption?: string;
   cover_url?: string;
   emoji?: string;
+  tags?: string[];
   isReal: boolean;
   rotation: number;
   floatDuration: number;
@@ -58,12 +59,14 @@ export default function FloatingConstellation({ moments }: { moments: Moment[] }
       caption?: string;
       cover_url?: string;
       emoji?: string;
+      tags?: string[];
       isReal: boolean;
     }> = moments.map((m) => ({
       id: m.id,
       title: m.title || "Kenangan Kita",
       caption: m.caption || "Momen manis yang tak terlupakan.",
       cover_url: m.cover_url || undefined,
+      tags: m.tags || [],
       isReal: true,
     }));
 
@@ -186,19 +189,26 @@ export default function FloatingConstellation({ moments }: { moments: Moment[] }
                       </p>
                     </div>
 
-                    {/* Cute Hover Tooltip with Handwriting note */}
+                    {/* Cute Hover Tooltip with Handwriting note & tags */}
                     <AnimatePresence>
-                      {isHovered && item.caption && (
+                      {isHovered && (item.caption || (item.tags && item.tags.length > 0)) && (
                         <motion.div
                           initial={{ opacity: 0, y: 10, scale: 0.95 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 5, scale: 0.95 }}
                           transition={{ duration: 0.2 }}
-                          className="absolute -bottom-14 left-1/2 -translate-x-1/2 w-56 bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl shadow-xl border border-rose-100/80 z-50 text-center pointer-events-none"
+                          className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-60 bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl shadow-xl border border-rose-100/80 z-50 text-center pointer-events-none"
                         >
-                          <p className="font-accent text-lg text-rose-900 leading-snug">
-                            "{item.caption}"
-                          </p>
+                          {item.caption && (
+                            <p className="font-accent text-lg text-rose-900 leading-snug">
+                              "{item.caption}"
+                            </p>
+                          )}
+                          {item.tags && item.tags.length > 0 && (
+                            <p className="font-body text-[11px] text-rose-700/80 font-medium mt-1">
+                              {item.tags.map((t) => `#${t}`).join(" ")}
+                            </p>
+                          )}
                         </motion.div>
                       )}
                     </AnimatePresence>

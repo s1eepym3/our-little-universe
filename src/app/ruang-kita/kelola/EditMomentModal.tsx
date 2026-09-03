@@ -6,6 +6,8 @@ import { Moment } from "@/types/database";
 import { createClient } from "@/lib/supabase/client";
 import { convertHeicToJpeg, isHeicFile } from "@/lib/heicConverter";
 import { triggerRevalidate } from "@/app/actions";
+import { cleanTags } from "@/lib/tags";
+import TagInput from "@/components/TagInput";
 import { X, Camera, Sparkles } from "lucide-react";
 import Image from "next/image";
 
@@ -25,6 +27,8 @@ export default function EditMomentModal({
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
   const [category, setCategory] = useState<"first_trip" | "random">("random");
+  const [tags, setTags] = useState<string[]>([]);
+  const [availableTags, setAvailableTags] = useState<string[]>([]);
   const [isPublic, setIsPublic] = useState(true);
   const [newFile, setNewFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -33,10 +37,27 @@ export default function EditMomentModal({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const supabase = createClient();
+    supabase
+      .from("moments")
+      .select("tags")
+      .then(({ data }) => {
+        if (data) {
+          const all: string[] = [];
+          data.forEach((m) => {
+            if (Array.isArray(m.tags)) all.push(...m.tags);
+          });
+          setAvailableTags(all);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
     if (moment) {
       setTitle(moment.title || "");
       setCaption(moment.caption || "");
       setCategory(moment.category);
+      setTags(moment.tags || []);
       setIsPublic(moment.is_public ?? true);
       setPreviewUrl(moment.cover_url || null);
       setNewFile(null);
@@ -103,6 +124,7 @@ export default function EditMomentModal({
 
       // 2. Update moment in database
       setStatusMsg("Menyimpan perubahan kenangan...");
+      const cleanedTags = cleanTags(tags);
       const { data: updatedData, error: updateError } = await supabase
         .from("moments")
         .update({
@@ -111,6 +133,7 @@ export default function EditMomentModal({
           category,
           is_public: isPublic,
           cover_url: coverUrl,
+          tags: cleanedTags,
         })
         .eq("id", moment.id)
         .select()
@@ -249,6 +272,19 @@ export default function EditMomentModal({
                 rows={3}
                 placeholder="Cerita atau debar saat foto ini diambil..."
                 className="w-full px-3 py-2 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 bg-white font-body-readable text-sm text-stone-800 placeholder:text-stone-400 resize-none leading-relaxed"
+              />
+            </div>
+
+            {/* Stiker Rasa (Tags) Field */}
+            <div>
+              <label className="block font-accent text-xl text-rose-950 mb-1">
+                Stiker Rasa:
+              </label>
+              <TagInput
+                tags={tags}
+                onChange={setTags}
+                availableTags={availableTags}
+                placeholder="tambah stiker rasa... (kafe, hujan, tugas)"
               />
             </div>
 

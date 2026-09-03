@@ -21,6 +21,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import EditMomentModal from "./EditMomentModal";
 import EditNoteModal from "./EditNoteModal";
 import ConfirmDialog from "./ConfirmDialog";
+import WashiTagChips from "@/components/WashiTagChips";
 
 interface KelolaDeskProps {
   initialMoments: Moment[];
@@ -311,7 +312,10 @@ export default function KelolaDesk({
                           </p>
                         )}
 
-                        <p className="font-body text-[11px] text-stone-400 flex items-center gap-1">
+                        {/* Stiker Rasa Tags */}
+                        <WashiTagChips tags={m.tags} max={4} className="pt-0.5" />
+
+                        <p className="font-body text-[11px] text-stone-400 flex items-center gap-1 pt-0.5">
                           <Calendar className="w-3 h-3 text-stone-400" />
                           {new Date(m.created_at).toLocaleDateString("id-ID", {
                             year: "numeric",

@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { triggerRevalidate } from "@/app/actions";
 import { convertHeicToJpeg, isHeicFile } from "@/lib/heicConverter";
+import { cleanTags } from "@/lib/tags";
+import TagInput from "@/components/TagInput";
 import { CheckCircle2, Heart } from "lucide-react";
 
 export default function UploadForm() {
@@ -12,6 +14,8 @@ export default function UploadForm() {
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
   const [category, setCategory] = useState<"first_trip" | "random">("random");
+  const [tags, setTags] = useState<string[]>([]);
+  const [availableTags, setAvailableTags] = useState<string[]>([]);
   const [isPublic, setIsPublic] = useState(true);
 
   const [loading, setLoading] = useState(false);
@@ -21,6 +25,21 @@ export default function UploadForm() {
   const [error, setError] = useState<string | null>(null);
 
   const supabase = createClient();
+
+  useEffect(() => {
+    supabase
+      .from("moments")
+      .select("tags")
+      .then(({ data }) => {
+        if (data) {
+          const all: string[] = [];
+          data.forEach((m) => {
+            if (Array.isArray(m.tags)) all.push(...m.tags);
+          });
+          setAvailableTags(all);
+        }
+      });
+  }, []);
 
   const handleFileChange = async (selectedFile: File | null) => {
     if (!selectedFile) return;
@@ -87,6 +106,7 @@ export default function UploadForm() {
       } = supabase.storage.from("memories").getPublicUrl(filePath);
 
       // 4. Insert metadata to 'moments' DB
+      const cleanedTags = cleanTags(tags);
       const { data: momentData, error: momentError } = await supabase
         .from("moments")
         .insert({
@@ -95,6 +115,7 @@ export default function UploadForm() {
           category,
           is_public: isPublic,
           cover_url: publicUrl,
+          tags: cleanedTags,
         })
         .select()
         .single();
@@ -123,6 +144,7 @@ export default function UploadForm() {
         setTitle("");
         setCaption("");
         setCategory("random");
+        setTags([]);
         setIsPublic(true);
         setProgress(0);
       }, 3500);
@@ -256,6 +278,22 @@ export default function UploadForm() {
           placeholder="Ceritakan sedikit rasa atau tawa saat momen ini terjadi..."
           className="w-full px-4 py-3 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 bg-[#fffdfa] font-body text-sm sm:text-base text-stone-800 placeholder:text-stone-400 resize-none leading-relaxed"
         />
+      </div>
+
+      {/* Stiker Rasa (Tags) Field */}
+      <div>
+        <label className="block font-accent text-2xl text-rose-950 mb-1">
+          Stiker Rasa:
+        </label>
+        <TagInput
+          tags={tags}
+          onChange={setTags}
+          availableTags={availableTags}
+          placeholder="tambah stiker rasa... (kafe, hujan, tugas)"
+        />
+        <p className="font-body text-[11px] text-stone-500 mt-1">
+          Opsional. Beri stiker suasana agar kenangan mudah dicari kembali ✨
+        </p>
       </div>
 
       {/* Category and Public Toggle in cozy card */}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, BookOpen, Calendar, MapPin, Sparkles } from "lucide-react";
 import FloatingParticles from "@/components/LazyFloatingParticles";
+import WashiTagChips from "@/components/WashiTagChips";
 
 export const dynamic = "force-dynamic";
 
@@ -129,6 +130,15 @@ export default async function MomentDetailPage({
                   "{typedMoment.caption}"
                 </p>
               )}
+
+              {/* Stiker Rasa Tags */}
+              <WashiTagChips
+                tags={typedMoment.tags}
+                max={5}
+                clickable
+                size="sm"
+                className="pt-2 justify-center sm:justify-start"
+              />
             </div>
 
             {/* Sweet Footer Whisper */}

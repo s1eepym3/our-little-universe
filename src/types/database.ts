@@ -8,6 +8,7 @@ export interface Moment {
   category: MomentCategory;
   is_public: boolean;
   cover_url: string | null;
+  tags: string[];
   created_at: string;
 }
 
