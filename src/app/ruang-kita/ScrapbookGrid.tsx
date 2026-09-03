@@ -7,6 +7,8 @@ import { Trash2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import WashiTagChips from "@/components/WashiTagChips";
+import PolaroidMedia from "@/components/PolaroidMedia";
+import { formatMemoryDate } from "@/lib/date";
 
 interface ScrapbookGridProps {
   moments: Moment[];
@@ -96,13 +98,11 @@ function ScrapbookItem({
         {/* Photo Canvas */}
         <div className="w-full aspect-[4/3] bg-rose-50/70 rounded-xs overflow-hidden relative border border-stone-200/60 mb-3.5">
           {moment.cover_url ? (
-            <Image
-              src={moment.cover_url}
+            <PolaroidMedia
+              url={moment.cover_url}
               alt={moment.title || "Kenangan"}
-              fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              loading="lazy"
-              className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+              className="group-hover:scale-105 transition-transform duration-500 ease-out"
             />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center">
@@ -157,12 +157,7 @@ function ScrapbookItem({
                 ? "☕ Tempat Kita"
                 : "🌸 Random Thing"}
             </span>
-            <span>
-              {new Date(moment.created_at).toLocaleDateString("id-ID", {
-                month: "short",
-                day: "numeric",
-              })}
-            </span>
+            <span>{formatMemoryDate(moment, "short")}</span>
           </div>
         </div>
       </div>

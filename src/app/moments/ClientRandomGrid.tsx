@@ -3,9 +3,10 @@
 import { Moment } from "@/types/database";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import WashiTagChips from "@/components/WashiTagChips";
+import PolaroidMedia from "@/components/PolaroidMedia";
+import { formatMemoryDate } from "@/lib/date";
 
 const washiColors = ["washi-pink", "washi-lavender", "washi-cream"];
 
@@ -64,16 +65,14 @@ export default function ClientRandomGrid({ moments }: { moments: Moment[] }) {
               className={`washi-tape ${moment.washi} absolute -top-2.5 left-1/2 -translate-x-1/2 w-14 h-3.5 opacity-90 shadow-2xs rotate-[-1deg]`}
             />
 
-            {/* Photo */}
+            {/* Photo / Video Canvas */}
             <div className="aspect-[3/4] bg-rose-50/50 rounded-xs overflow-hidden relative border border-stone-200/40">
               {moment.cover_url ? (
-                <Image
-                  src={moment.cover_url}
+                <PolaroidMedia
+                  url={moment.cover_url}
                   alt={moment.title || "Candid moment"}
-                  fill
                   sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                  loading="lazy"
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="group-hover:scale-105 transition-transform duration-500"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-3xl">
@@ -82,14 +81,17 @@ export default function ClientRandomGrid({ moments }: { moments: Moment[] }) {
               )}
             </div>
 
-            {/* Handwritten Caption */}
+            {/* Handwritten Caption & Date */}
             <div className="pt-3 text-center">
               <p className="font-accent text-xl text-stone-800 line-clamp-1 group-hover:text-rose-950 transition-colors">
                 {moment.title || moment.caption || "Momen kita"}
               </p>
+              <p className="font-body text-[11px] text-stone-400 font-light mt-0.5">
+                {formatMemoryDate(moment, "short")}
+              </p>
               {moment.caption && moment.title && (
-                <p className="font-body text-xs text-rose-700/80 line-clamp-1">
-                  "{moment.caption}"
+                <p className="font-body text-xs text-rose-700/80 line-clamp-1 mt-1">
+                  &ldquo;{moment.caption}&rdquo;
                 </p>
               )}
               {/* Washi Tag Chips */}

@@ -3,6 +3,7 @@ import { Moment } from "@/types/database";
 import { triggerRevalidate } from "@/app/actions";
 import ScrapbookGrid from "./ScrapbookGrid";
 import Link from "next/link";
+import { shuffleArray } from "@/lib/shuffle";
 
 export const dynamic = "force-dynamic";
 
@@ -90,7 +91,7 @@ export default async function RuangKitaPage({
 
       {/* Living Scrapbook Grid */}
       <ScrapbookGrid
-        moments={(moments as Moment[]) || []}
+        moments={shuffleArray((moments as Moment[]) || [])}
         deleteAction={deleteMoment}
       />
     </div>

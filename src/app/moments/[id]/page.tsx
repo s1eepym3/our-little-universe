@@ -110,26 +110,45 @@ export default async function MomentDetailPage({
 
               <span className="inline-flex items-center gap-1.5 font-body font-light text-xs sm:text-sm text-stone-500">
                 <Calendar className="w-3.5 h-3.5 text-stone-400" />
-                {new Date(typedMoment.created_at).toLocaleDateString("id-ID", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+                {typedMoment.taken_at
+                  ? new Date(typedMoment.taken_at).toLocaleDateString("id-ID", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  : new Date(typedMoment.created_at).toLocaleDateString("id-ID", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
               </span>
             </div>
 
-            {/* Photo Canvas - Large and Clear */}
+            {/* Photo / Video Canvas - Large and Clear */}
             {hasCover ? (
-              <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] bg-rose-50/70 rounded-sm overflow-hidden border border-stone-200/80 shadow-inner mb-6">
-                <Image
-                  src={typedMoment.cover_url!}
-                  alt={title || "Kenangan Kita"}
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 100vw, 768px"
-                  className="object-cover"
-                />
-              </div>
+              typedMoment.media?.some((m) => m.type === "video") ||
+              /\.(mp4|mov|webm|m4v)(\?.*)?$/i.test(typedMoment.cover_url || "") ? (
+                <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] bg-black rounded-sm overflow-hidden border border-stone-200/80 shadow-inner mb-6 flex items-center justify-center">
+                  <video
+                    src={typedMoment.cover_url!}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="w-full h-full object-contain max-h-[70vh]"
+                  />
+                </div>
+              ) : (
+                <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] bg-rose-50/70 rounded-sm overflow-hidden border border-stone-200/80 shadow-inner mb-6">
+                  <Image
+                    src={typedMoment.cover_url!}
+                    alt={title || "Kenangan Kita"}
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 768px"
+                    className="object-cover"
+                  />
+                </div>
+              )
             ) : (
               <div className="w-full aspect-[4/3] sm:aspect-[16/11] bg-rose-50/50 rounded-sm border border-stone-200/60 flex flex-col items-center justify-center gap-2 mb-6">
                 <span className="text-5xl">📸</span>

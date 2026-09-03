@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 import { convertHeicToJpeg, isHeicFile } from "@/lib/heicConverter";
 import { triggerRevalidate } from "@/app/actions";
 import { cleanTags } from "@/lib/tags";
+import { toInputDateFormat } from "@/lib/date";
 import TagInput from "@/components/TagInput";
 import { X, Camera, Sparkles } from "lucide-react";
 import Image from "next/image";
@@ -28,6 +29,7 @@ export default function EditMomentModal({
   const [mounted, setMounted] = useState(false);
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
+  const [takenAt, setTakenAt] = useState("");
   const [category, setCategory] = useState<"first_trip" | "random">("random");
   const [tags, setTags] = useState<string[]>([]);
   const [availableTags, setAvailableTags] = useState<string[]>([]);
@@ -72,6 +74,7 @@ export default function EditMomentModal({
     if (moment) {
       setTitle(moment.title || "");
       setCaption(moment.caption || "");
+      setTakenAt(toInputDateFormat(moment.taken_at || moment.created_at));
       setCategory(moment.category);
       setTags(moment.tags || []);
       setIsPublic(moment.is_public ?? true);
@@ -150,6 +153,7 @@ export default function EditMomentModal({
           is_public: isPublic,
           cover_url: coverUrl,
           tags: cleanedTags,
+          taken_at: takenAt || null,
         })
         .eq("id", moment.id)
         .select()
@@ -274,6 +278,19 @@ export default function EditMomentModal({
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Judul kenangan kita..."
                 className="w-full px-3 py-2 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 bg-white font-body text-sm text-stone-800 placeholder:text-stone-400"
+              />
+            </div>
+
+            {/* Date Field (taken_at) */}
+            <div>
+              <label className="block font-accent text-xl text-rose-950 mb-1">
+                Tanggal Kenangan (opsional):
+              </label>
+              <input
+                type="date"
+                value={takenAt}
+                onChange={(e) => setTakenAt(e.target.value)}
+                className="w-full px-3 py-2 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 bg-white font-body text-sm text-stone-800"
               />
             </div>
 

@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { triggerRevalidate } from "@/app/actions";
 import Link from "next/link";
 import Image from "next/image";
+import PolaroidMedia from "@/components/PolaroidMedia";
 import {
   ArrowLeft,
   Calendar,
@@ -249,10 +250,9 @@ export default function KelolaDesk({
                     <div className="flex items-start sm:items-center gap-3.5 flex-1 min-w-0">
                       <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xs overflow-hidden bg-rose-50 border border-stone-200/70 shrink-0">
                         {m.cover_url ? (
-                          <Image
-                            src={m.cover_url}
+                          <PolaroidMedia
+                            url={m.cover_url}
                             alt={m.title || "Kenangan"}
-                            fill
                             sizes="80px"
                             className="object-cover"
                           />
@@ -315,14 +315,36 @@ export default function KelolaDesk({
                         {/* Stiker Rasa Tags */}
                         <WashiTagChips tags={m.tags} max={4} className="pt-0.5" />
 
-                        <p className="font-body text-[11px] text-stone-400 flex items-center gap-1 pt-0.5">
-                          <Calendar className="w-3 h-3 text-stone-400" />
-                          {new Date(m.created_at).toLocaleDateString("id-ID", {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          })}
-                        </p>
+                        <div className="flex items-center gap-2 flex-wrap text-[11px] font-body text-stone-400 pt-0.5">
+                          <span className="flex items-center gap-1 text-stone-600">
+                            <Calendar className="w-3 h-3 text-rose-400" />
+                            <span>
+                              {m.taken_at
+                                ? new Date(m.taken_at).toLocaleDateString("id-ID", {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                  })
+                                : new Date(m.created_at).toLocaleDateString("id-ID", {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                  })}
+                            </span>
+                          </span>
+                          {m.taken_at &&
+                            new Date(m.taken_at).toDateString() !==
+                              new Date(m.created_at).toDateString() && (
+                              <span className="text-[10px] text-stone-400">
+                                (diunggah{" "}
+                                {new Date(m.created_at).toLocaleDateString("id-ID", {
+                                  month: "short",
+                                  day: "numeric",
+                                })}
+                                )
+                              </span>
+                            )}
+                        </div>
                       </div>
                     </div>
 

@@ -6,9 +6,12 @@ import { ArrowLeft, X, Sparkles, MapPin } from "lucide-react";
 import ClientRandomGrid from "./ClientRandomGrid";
 import FloatingParticles from "@/components/LazyFloatingParticles";
 import WashiTagChips from "@/components/WashiTagChips";
+import PolaroidMedia from "@/components/PolaroidMedia";
 import { getTagFrequencies, normalizeTag } from "@/lib/tags";
+import { formatMemoryDate } from "@/lib/date";
+import { shuffleArray } from "@/lib/shuffle";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 const tagCloudColors = [
   "bg-rose-50 text-rose-900 border-rose-200/90 hover:bg-rose-100",
@@ -42,16 +45,18 @@ export default async function MomentsPage({
   const tagFrequencies = getTagFrequencies(typedMoments);
 
   // If a tag is active, filter matching moments
-  const filteredMoments = activeTag
-    ? typedMoments.filter(
-        (m) =>
-          Array.isArray(m.tags) &&
-          m.tags.some((t) => normalizeTag(t) === activeTag)
-      )
-    : [];
+  const filteredMoments = shuffleArray(
+    activeTag
+      ? typedMoments.filter(
+          (m) =>
+            Array.isArray(m.tags) &&
+            m.tags.some((t) => normalizeTag(t) === activeTag)
+        )
+      : []
+  );
 
-  const tempatKitaMoments = typedMoments.filter(
-    (m) => m.category === "first_trip"
+  const tempatKitaMoments = shuffleArray(
+    typedMoments.filter((m) => m.category === "first_trip")
   );
   const randomThings = typedMoments.filter((m) => m.category === "random");
 
@@ -187,13 +192,11 @@ export default async function MomentsPage({
 
                     {moment.cover_url && (
                       <div className="aspect-[4/3] rounded-xs overflow-hidden mb-3 relative border border-stone-200/60 bg-rose-50/50">
-                        <Image
-                          src={moment.cover_url}
+                        <PolaroidMedia
+                          url={moment.cover_url}
                           alt={moment.title || "Kenangan"}
-                          fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          loading="lazy"
-                          className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                          className="group-hover:scale-105 transition-transform duration-500 ease-out"
                         />
                       </div>
                     )}
@@ -213,12 +216,7 @@ export default async function MomentsPage({
                             </>
                           )}
                         </span>
-                        <span>
-                          {new Date(moment.created_at).toLocaleDateString(
-                            "id-ID",
-                            { month: "short", day: "numeric" }
-                          )}
-                        </span>
+                        <span>{formatMemoryDate(moment, "short")}</span>
                       </div>
 
                       <h3 className="font-accent text-xl sm:text-2xl text-stone-900 group-hover:text-rose-900 transition-colors truncate">
@@ -280,18 +278,23 @@ export default async function MomentsPage({
 
                       {moment.cover_url && (
                         <div className="aspect-[4/3] rounded-xs overflow-hidden mb-4 relative border border-stone-200/60 bg-rose-50/50">
-                          <Image
-                            src={moment.cover_url}
+                          <PolaroidMedia
+                            url={moment.cover_url}
                             alt={moment.title || "Tempat Kita"}
-                            fill
                             sizes="(max-width: 768px) 100vw, 50vw"
-                            loading="lazy"
-                            className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                            className="group-hover:scale-105 transition-transform duration-700 ease-out"
                           />
                         </div>
                       )}
 
                       <div className="px-1 space-y-1 text-center md:text-left">
+                        <div className="flex items-center justify-between text-xs font-body text-stone-400 mb-1">
+                          <span className="flex items-center gap-1 text-rose-800/80">
+                            <MapPin className="w-3 h-3 text-rose-500" />
+                            <span>Tempat Kita</span>
+                          </span>
+                          <span>{formatMemoryDate(moment, "short")}</span>
+                        </div>
                         <h3 className="font-accent text-2xl sm:text-3xl text-stone-800 group-hover:text-rose-950 transition-colors">
                           {moment.title || "Sudut Manis"}
                         </h3>

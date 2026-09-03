@@ -13,6 +13,7 @@ export default function UploadForm() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
+  const [takenAt, setTakenAt] = useState("");
   const [category, setCategory] = useState<"first_trip" | "random">("random");
   const [tags, setTags] = useState<string[]>([]);
   const [availableTags, setAvailableTags] = useState<string[]>([]);
@@ -46,6 +47,24 @@ export default function UploadForm() {
 
     setError(null);
 
+    const isVideo =
+      selectedFile.type.startsWith("video") ||
+      /\.(mp4|mov|webm|m4v)$/i.test(selectedFile.name);
+
+    if (isVideo) {
+      const sizeInMB = selectedFile.size / (1024 * 1024);
+      if (sizeInMB > 50) {
+        setError("videonya kebesaran sayang... potong dulu ya 💕");
+        setFile(null);
+        setPreviewUrl(null);
+        return;
+      }
+      setStatusMessage("Video terdeteksi! Siap menghidupkan polaroid ✨");
+      setFile(selectedFile);
+      setPreviewUrl(URL.createObjectURL(selectedFile));
+      return;
+    }
+
     // If it's a HEIC file, give instant feedback
     if (isHeicFile(selectedFile)) {
       setStatusMessage("Foto HEIC terdeteksi. Akan otomatis dikonversi saat upload.");
@@ -73,18 +92,22 @@ export default function UploadForm() {
     setProgress(15);
 
     try {
-      // 1. Convert HEIC to JPEG if needed
+      const isVideo =
+        file.type.startsWith("video") ||
+        /\.(mp4|mov|webm|m4v)$/i.test(file.name);
+
+      // 1. Convert HEIC to JPEG if needed (skip for video)
       let uploadableFile = file;
-      if (isHeicFile(file)) {
+      if (!isVideo && isHeicFile(file)) {
         setStatusMessage("Mengonversi foto iPhone (.HEIC) ke .JPG...");
         uploadableFile = await convertHeicToJpeg(file, (msg) => setStatusMessage(msg));
       }
 
       setProgress(40);
-      setStatusMessage("Menyelipkan foto ke bucket memori...");
+      setStatusMessage(isVideo ? "Menyelipkan video ke bucket memori..." : "Menyelipkan foto ke bucket memori...");
 
       // 2. Upload directly to Supabase Storage bucket 'memories'
-      const fileExt = uploadableFile.name.split(".").pop()?.toLowerCase() || "jpg";
+      const fileExt = uploadableFile.name.split(".").pop()?.toLowerCase() || (isVideo ? "mp4" : "jpg");
       const cleanFileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
       const filePath = `${category}/${cleanFileName}`;
 
@@ -93,6 +116,7 @@ export default function UploadForm() {
         .upload(filePath, uploadableFile, {
           cacheControl: "3600",
           upsert: false,
+          contentType: uploadableFile.type || (isVideo ? "video/mp4" : "image/jpeg"),
         });
 
       if (uploadError) throw uploadError;
@@ -107,16 +131,22 @@ export default function UploadForm() {
 
       // 4. Insert metadata to 'moments' DB
       const cleanedTags = cleanTags(tags);
+      const momentPayload: any = {
+        title: title.trim() || null,
+        caption: caption.trim() || null,
+        category,
+        is_public: isPublic,
+        cover_url: publicUrl,
+        tags: cleanedTags,
+      };
+
+      if (takenAt.trim()) {
+        momentPayload.taken_at = takenAt.trim();
+      }
+
       const { data: momentData, error: momentError } = await supabase
         .from("moments")
-        .insert({
-          title: title.trim() || null,
-          caption: caption.trim() || null,
-          category,
-          is_public: isPublic,
-          cover_url: publicUrl,
-          tags: cleanedTags,
-        })
+        .insert(momentPayload)
         .select()
         .single();
 
@@ -125,7 +155,7 @@ export default function UploadForm() {
       // Also insert to media table
       await supabase.from("media").insert({
         moment_id: momentData.id,
-        type: uploadableFile.type.startsWith("video") ? "video" : "image",
+        type: isVideo ? "video" : "image",
         url: publicUrl,
       });
 
@@ -143,6 +173,7 @@ export default function UploadForm() {
         setPreviewUrl(null);
         setTitle("");
         setCaption("");
+        setTakenAt("");
         setCategory("random");
         setTags([]);
         setIsPublic(true);
@@ -174,7 +205,7 @@ export default function UploadForm() {
           onClick={() => setSuccess(false)}
           className="washi-tape washi-pink px-6 py-2.5 font-body font-medium text-sm sm:text-base text-rose-950 shadow-md hover:scale-105 active:scale-95 transition-all mt-4"
         >
-          + Upload Foto Lain
+          Upload Kenangan Lain 💌
         </button>
       </div>
     );
@@ -182,75 +213,64 @@ export default function UploadForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {error && (
-        <div className="p-3 bg-red-50 text-red-700 font-body text-sm rounded-xl border border-red-200">
-          {error}
-        </div>
-      )}
-
-      {/* DROP ZONE: Open Love-Letter Envelope Design */}
+      {/* Photo/Video Dropzone Card */}
       <div className="relative">
-        <label className="block font-accent text-2xl text-rose-950 mb-2">
-          Pilih Foto atau Video:
-        </label>
+        <div className="washi-tape washi-pink absolute -top-3 left-8 w-24 h-5 opacity-90 rotate-[-1deg] z-10" />
 
-        <div className="relative group cursor-pointer">
+        <label className="block relative cursor-pointer group">
           <input
-            id="scrapbook-file"
             type="file"
-            accept="image/*,video/*,.heic,.heif"
-            required
+            accept="image/*,video/mp4,video/quicktime,video/webm,.heic,.heif"
             onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
-            className="sr-only"
+            className="hidden"
           />
 
-          <label
-            htmlFor="scrapbook-file"
-            className="block relative cursor-pointer select-none"
-          >
-            {/* Open Envelope Illustration Container */}
-            <div className="relative w-full min-h-[220px] bg-[#fffaf0] border-2 border-dashed border-rose-300 hover:border-rose-400 rounded-2xl p-6 flex flex-col items-center justify-center overflow-hidden transition-all duration-300 group-hover:bg-[#fff7ed]">
-              {/* Envelope Back Flap folded up */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-12 bg-rose-200/40 rounded-b-3xl -mt-2 border-b border-rose-300/60 pointer-events-none" />
-
-              {/* Center Content / Polaroid sticking out */}
-              {previewUrl ? (
-                <div className="relative w-36 aspect-[4/3] bg-white p-2 pb-5 rounded-xs shadow-md border border-stone-200 rotate-[-2deg] mb-2 group-hover:rotate-0 transition-transform">
+          <div className="border-2 border-dashed border-rose-300 group-hover:border-rose-400 bg-white/70 p-6 sm:p-8 rounded-2xl text-center transition-all duration-300 paper-torn relative overflow-hidden group-hover:bg-white/90 shadow-sm">
+            {previewUrl ? (
+              <div className="relative w-44 h-44 mx-auto rounded-lg overflow-hidden border border-rose-200/80 shadow-md">
+                {file && (file.type.startsWith("video") || /\.(mp4|mov|webm|m4v)$/i.test(file.name)) ? (
+                  <video
+                    src={previewUrl}
+                    controls
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
                   <img
                     src={previewUrl}
                     alt="Preview"
                     className="w-full h-full object-cover"
                   />
-                  <span className="block text-center font-body text-xs text-stone-500 mt-1">
-                    {file?.name.slice(0, 16)}...
-                  </span>
+                )}
+                <span className="block text-center font-body text-xs text-stone-500 mt-1">
+                  {file?.name.slice(0, 16)}...
+                </span>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center text-center space-y-2 py-4">
+                <div className="w-16 h-16 rounded-full bg-rose-100/80 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                  💌
                 </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center text-center space-y-2 py-4">
-                  <div className="w-16 h-16 rounded-full bg-rose-100/80 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-                    💌
-                  </div>
-                  <p className="font-accent text-2xl text-rose-950">
-                    {file ? file.name : "Selipkan foto ke dalam amplop..."}
-                  </p>
-                  <p className="font-body text-xs sm:text-sm text-rose-700/70 max-w-xs">
-                    Sentuh atau tarik file ke sini (Mendukung iPhone .HEIC, JPG, PNG, MP4)
-                  </p>
-                </div>
-              )}
+                <p className="font-accent text-2xl text-rose-950">
+                  {file ? file.name : "Selipkan foto atau video ke dalam amplop..."}
+                </p>
+                <p className="font-body text-xs sm:text-sm text-rose-700/70 max-w-xs">
+                  Sentuh atau tarik file ke sini (iPhone .HEIC, JPG, PNG, MP4 maks 50MB)
+                </p>
+              </div>
+            )}
 
-              {/* Washi tape accent on envelope */}
-              <div className="washi-tape washi-lavender absolute -bottom-2 right-8 w-20 h-4 opacity-85 rotate-[-2deg]" />
-            </div>
-          </label>
-        </div>
-
-        {statusMessage && (
-          <p className="font-body text-xs sm:text-sm text-purple-800 mt-2 animate-pulse flex items-center gap-1.5">
-            <span>✨</span> {statusMessage}
-          </p>
-        )}
+            {/* Washi tape accent on envelope */}
+            <div className="washi-tape washi-lavender absolute -bottom-2 right-8 w-20 h-4 opacity-85 rotate-[-2deg]" />
+          </div>
+        </label>
       </div>
+
+      {statusMessage && (
+        <p className="font-body text-xs sm:text-sm text-purple-800 mt-2 animate-pulse flex items-center gap-1.5">
+          <span>✨</span> {statusMessage}
+        </p>
+      )}
 
       {/* Title Field */}
       <div>
@@ -264,6 +284,22 @@ export default function UploadForm() {
           placeholder="e.g. sore santai di pinggir danau..."
           className="w-full px-4 py-3 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 bg-[#fffdfa] font-body text-sm sm:text-base text-stone-800 placeholder:text-stone-400"
         />
+      </div>
+
+      {/* Date Field (taken_at) */}
+      <div>
+        <label className="block font-accent text-2xl text-rose-950 mb-1">
+          tanggal kenangan ini... (opsional)
+        </label>
+        <input
+          type="date"
+          value={takenAt}
+          onChange={(e) => setTakenAt(e.target.value)}
+          className="w-full px-4 py-3 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300 bg-[#fffdfa] font-body text-sm sm:text-base text-stone-800"
+        />
+        <p className="font-body text-[11px] text-stone-500 mt-1">
+          Kosongkan jika momen terjadi hari ini 🗓️
+        </p>
       </div>
 
       {/* Caption Field */}
@@ -318,7 +354,7 @@ export default function UploadForm() {
               Tampil di Publik?
             </span>
             <span className="font-body text-xs text-stone-500">
-              Bisa dilihat di halaman depan
+              {isPublic ? "Bisa dilihat di semesta luar ✦" : "Hanya untuk kita berdua 🔒"}
             </span>
           </div>
           <label className="relative inline-flex items-center cursor-pointer">
@@ -333,34 +369,41 @@ export default function UploadForm() {
         </div>
       </div>
 
-      {/* Progress Bar during upload */}
-      {loading && (
-        <div className="space-y-2 pt-2">
-          <div className="w-full bg-stone-200 rounded-full h-2 overflow-hidden">
-            <div
-              className="bg-rose-500 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+      {error && (
+        <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 font-body text-sm">
+          {error}
         </div>
       )}
 
-      {/* Submit Button styled as Washi Tape / Wax Seal */}
-      <div className="pt-3 text-center">
+      {/* Progress Bar when uploading */}
+      {loading && (
+        <div className="space-y-1.5 pt-2">
+          <div className="w-full bg-rose-100 rounded-full h-2.5 overflow-hidden">
+            <div
+              className="bg-rose-500 h-2.5 rounded-full transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <p className="font-body text-xs text-rose-800/80 text-right">
+            {progress}% terunggah
+          </p>
+        </div>
+      )}
+
+      {/* Submit Button */}
+      <div className="pt-4 flex justify-end">
         <button
           type="submit"
           disabled={loading || !file}
-          className="w-full washi-tape washi-pink py-3.5 font-body font-medium text-base sm:text-lg text-rose-950 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer rotate-[-0.5deg]"
+          className="w-full sm:w-auto washi-tape washi-pink px-8 py-3.5 font-body font-medium text-base text-rose-950 shadow-md hover:scale-[1.02] active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
         >
           {loading ? (
-            <span className="flex items-center gap-2">
-              <span className="animate-heart-spin inline-block text-2xl">💖</span>
-              {statusMessage || "Menyelipkan foto..."}
-            </span>
+            <span>Menyimpan ke memori...</span>
           ) : (
-            <span className="flex items-center gap-2">
-              <Heart className="w-5 h-5 fill-rose-800" /> Tempel Kenangan Ini
-            </span>
+            <>
+              <Heart className="w-5 h-5 text-rose-700 fill-rose-600 animate-pulse" />
+              <span>Sematkan ke Semesta Kita</span>
+            </>
           )}
         </button>
       </div>

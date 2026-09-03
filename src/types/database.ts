@@ -9,6 +9,7 @@ export interface Moment {
   is_public: boolean;
   cover_url: string | null;
   tags: string[];
+  taken_at?: string | null;
   created_at: string;
 }
 

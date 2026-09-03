@@ -13,6 +13,7 @@ CREATE TABLE public.moments (
     is_public BOOLEAN DEFAULT false,
     cover_url TEXT,
     tags TEXT[] NOT NULL DEFAULT '{}',
+    taken_at DATE DEFAULT CURRENT_DATE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -124,3 +125,8 @@ ON storage.objects FOR ALL
 TO authenticated
 USING (bucket_id = 'memories')
 WITH CHECK (bucket_id = 'memories');
+
+-- 9. Migration for custom memory date (taken_at)
+ALTER TABLE public.moments ADD COLUMN IF NOT EXISTS taken_at DATE;
+UPDATE public.moments SET taken_at = created_at::date WHERE taken_at IS NULL;
+ALTER TABLE public.moments ALTER COLUMN taken_at SET DEFAULT CURRENT_DATE;

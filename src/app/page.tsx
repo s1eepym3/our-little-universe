@@ -12,12 +12,12 @@ export default async function Home() {
 
   const { data: moments } = await supabase
     .from("moments")
-    .select("*")
+    .select("*, media(*)")
     .eq("is_public", true)
     .order("created_at", { ascending: false });
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden animated-mesh-bg paper-noise flex flex-col justify-between">
+    <div className="relative min-h-screen w-full overflow-x-hidden animated-mesh-bg paper-noise flex flex-col justify-between">
       {/* Ambient floating hearts and sparkles particle layer */}
       <FloatingParticles count={20} />
 
