@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Image as ImageIcon, PenLine, PlusCircle, LogOut, Home } from "lucide-react";
+import SecretKnock from "@/components/SecretKnock";
 
 export default async function RuangKitaLayout({
   children,
@@ -41,11 +42,13 @@ export default async function RuangKitaLayout({
           </span>
         </div>
 
-        {/* User indicator */}
+        {/* User indicator & Secret Knock to Management Room */}
         <div className="text-right">
-          <span className="font-body text-xs text-rose-800/80">
-            dua hati, satu ruang
-          </span>
+          <SecretKnock hintPosition="bottom">
+            <span className="font-body text-xs text-rose-800/80 cursor-default select-none">
+              dua hati, satu ruang
+            </span>
+          </SecretKnock>
         </div>
       </header>
 

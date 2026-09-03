@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import LoginForm from "./LoginForm";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -34,7 +35,9 @@ export default function MasukPage() {
             </p>
           </div>
 
-          <LoginForm />
+          <Suspense fallback={<div className="text-center py-6 font-body text-sm text-rose-700/60">menyiapkan kunci rahasia...</div>}>
+            <LoginForm />
+          </Suspense>
         </div>
       </div>
 

@@ -146,7 +146,7 @@ export default function FloatingConstellation({ moments }: { moments: Moment[] }
                 className="relative cursor-pointer"
               >
                 <Link
-                  href={item.isReal ? "/moments" : "/ruang-kita"}
+                  href={item.isReal ? `/moments/${item.id}` : "/moments"}
                   className="block"
                 >
                   {/* Polaroid Frame */}
@@ -234,7 +234,7 @@ export default function FloatingConstellation({ moments }: { moments: Moment[] }
               className="mx-auto max-w-[260px]"
             >
               <Link
-                href={item.isReal ? "/moments" : "/ruang-kita"}
+                href={item.isReal ? `/moments/${item.id}` : "/moments"}
                 className="block"
               >
                 <div className="relative bg-[#fdfbf7] p-3.5 pb-6 rounded-md shadow-md border border-stone-200/60">

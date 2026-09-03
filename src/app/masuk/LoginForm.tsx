@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginForm() {
@@ -10,7 +10,11 @@ export default function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
+
+  const callbackUrl = searchParams.get("callbackUrl");
+  const destination = callbackUrl && callbackUrl.startsWith("/") ? callbackUrl : "/ruang-kita";
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +30,7 @@ export default function LoginForm() {
       setError(error.message);
       setLoading(false);
     } else {
-      router.push("/ruang-kita");
+      router.push(destination);
       router.refresh();
     }
   };

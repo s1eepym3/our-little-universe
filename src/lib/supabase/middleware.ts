@@ -41,12 +41,15 @@ export async function updateSession(request: NextRequest) {
   if (isProtectedRoute && !user) {
     const url = request.nextUrl.clone()
     url.pathname = '/masuk'
+    url.searchParams.set('callbackUrl', request.nextUrl.pathname + request.nextUrl.search)
     return NextResponse.redirect(url)
   }
 
   if (isAuthRoute && user) {
     const url = request.nextUrl.clone()
-    url.pathname = '/ruang-kita'
+    const callback = request.nextUrl.searchParams.get('callbackUrl')
+    url.pathname = callback && callback.startsWith('/') ? callback : '/ruang-kita'
+    url.search = ''
     return NextResponse.redirect(url)
   }
 

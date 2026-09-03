@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Moment } from "@/types/database";
 import FloatingConstellation from "@/components/FloatingConstellation";
 import FloatingParticles from "@/components/LazyFloatingParticles";
+import SecretKnock from "@/components/SecretKnock";
 import Link from "next/link";
 
 export const revalidate = 60; // ISR 60 seconds
@@ -20,23 +21,23 @@ export default async function Home() {
       {/* Ambient floating hearts and sparkles particle layer */}
       <FloatingParticles count={20} />
 
-      {/* Small handwritten title in top corner, fading in after 2s */}
+      {/* Small handwritten title in top corner with secret knock easter egg */}
       <header className="fixed top-6 left-6 z-40">
-        <Link
-          href="/moments"
-          className="group block opacity-0 animate-[fadeIn_1.4s_ease-out_2s_forwards]"
+        <div
+          className="opacity-0 animate-[fadeIn_1.4s_ease-out_2s_forwards]"
           style={{ animationFillMode: "forwards" }}
         >
-          <span className="font-accent text-3xl md:text-4xl text-rose-900/80 group-hover:text-rose-600 transition-colors drop-shadow-xs flex items-center gap-2">
-            our little universe
-            <span className="text-sm opacity-0 group-hover:opacity-80 transition-opacity text-rose-500">
-              ✦
-            </span>
-          </span>
-          <p className="font-body text-sm text-rose-800/60 font-normal -mt-1 group-hover:text-rose-700 transition-colors">
-            every little second with you
-          </p>
-        </Link>
+          <SecretKnock>
+            <div>
+              <span className="font-accent text-3xl md:text-4xl text-rose-900/80 drop-shadow-xs flex items-center gap-2">
+                our little universe
+              </span>
+              <p className="font-body text-sm text-rose-800/60 font-normal -mt-1">
+                every little second with you
+              </p>
+            </div>
+          </SecretKnock>
+        </div>
       </header>
 
       {/* Secret entrance to private journal desk in top-right */}
